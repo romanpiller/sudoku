@@ -1,0 +1,9 @@
+parameters:
+    level: 9
+    fileExtensions:
+        - phpt
+    paths:
+      - ../../src
+      - ../../tests/unit/src
+includes:
+  - phpstan-baseline.neon

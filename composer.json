@@ -1,0 +1,48 @@
+{
+  "name": "romanpiller/sudoku",
+  "description": "Sudoku solver",
+  "license": "MIT",
+  "type": "package",
+  "authors": [
+    {
+      "name": "Roman Piller",
+      "email": "roman.piller@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Sudoku\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Sudoku\\Tests\\": "tests/unit/src/"
+    }
+  },
+  "require": {
+    "php": "~8.5"
+  },
+  "require-dev": {
+    "mockery/mockery": "^1.6",
+    "nette/di": "^3.1",
+    "nette/tester": "^2.4",
+    "phpstan/phpstan": "^1.8",
+    "shipmonk/composer-dependency-analyser": "^1.8",
+    "squizlabs/php_codesniffer": "^3.7",
+    "roave/security-advisories": "dev-latest",
+    "tracy/tracy": "^2.12"
+  },
+  "scripts": {
+    "check-dependency": "vendor/bin/composer-dependency-analyser --config tests/dependencies/composer-dependency-analyzer.php",
+    "phpstan": "php -dxdebug.mode=off vendor/bin/phpstan analyse -c tests/phpstan/phpstan.neon",
+    "phpstan-new": "git diff devel --name-only --diff-filter=dr | xargs php -dxdebug.mode=off vendor/bin/phpstan analyse -c tests/phpstan/phpstan.neon",
+    "phpstan-baseline": "php -dxdebug.mode=off vendor/bin/phpstan analyse -c tests/phpstan/phpstan.neon --generate-baseline tests/phpstan-baseline.neon --allow-empty-baseline",
+    "phpcodesniffer": "vendor/bin/phpcs -p -s --colors src/ tests/manual tests/unit --extensions=php,phpt --standard=PSR1,PSR2,PSR12 --exclude=PSR1.Files.SideEffects,PSR12.Files.OpenTag,PSR12.Files.FileHeader --ignore=tests/unit/src/samples/*,*/temp/* --parallel=10",
+    "phpcodesniffer-new": "git diff devel --name-only --diff-filter=dr | xargs vendor/bin/phpcs -p -s --colors --extensions=php,phpt --standard=PSR1,PSR2,PSR12 --exclude=PSR1.Files.SideEffects,PSR12.Files.OpenTag,PSR12.Files.FileHeader --ignore=tests/unit/src/samples/* --parallel=10",
+    "man-test": "php tests/manual/Facades/SudokuFacade/AnalyseTest.phpt",
+    "unit-test": "vendor/bin/tester -o console -C -s tests/unit",
+    "cover": "vendor/bin/tester -C tests/unit --coverage-src src/ --coverage tests/cover.html",
+    "check-new": ["@phpstan-new", "@phpcodesniffer-new"],
+    "check-all": ["@phpstan", "@phptest", "@cover", "@phpcodesniffer"]
+  }
+}
