@@ -20,7 +20,7 @@
     }
   },
   "require": {
-    "php": "~8.5",
+    "php": "~8.3",
     "nette/di": "^3.2"
   },
   "require-dev": {
@@ -43,6 +43,6 @@
     "unit-test": "vendor/bin/tester -o console -C -s tests/unit",
     "cover": "vendor/bin/tester -C tests/unit --coverage-src src/ --coverage tests/cover.html",
     "check-new": ["@phpstan-new", "@phpcodesniffer-new"],
-    "check-all": ["@check-dependency, @phpstan", "@phptest", "@phpcodesniffer"]
+    "check-all": ["@check-dependency", "@phpstan", "@phptest", "@phpcodesniffer"]
   }
 }
