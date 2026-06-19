@@ -11,5 +11,3 @@ vendor/
 /tests/*/output/
 /tests/*/*/output/
 /tests/*/*/*/output/
-/tests/manual/temp/
-/tests/unit/temp/
