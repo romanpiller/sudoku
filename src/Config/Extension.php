@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Sudoku\config;
+namespace Sudoku\Config;
 
 use Nette\DI\CompilerExtension;
 use Nette\DI\Config\Loader;

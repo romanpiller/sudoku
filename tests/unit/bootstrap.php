@@ -21,7 +21,7 @@ function create_container(): Container
 
     /** @var Container $container */
     $container = $containerLoader->load(function ($compiler) {
-        $compiler->loadConfig(__DIR__ . '/../../src/config/config.neon');
+        $compiler->loadConfig(__DIR__ . '/../../src/Config/config.neon');
         $compiler->loadConfig(__DIR__ . '/src/config/config.local.neon');
     });
 

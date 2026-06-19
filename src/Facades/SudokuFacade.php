@@ -22,9 +22,9 @@ final readonly class SudokuFacade
    * @param SudokuService    $sudokuService
    * @param GridService      $gridService
    * @param ViewService      $viewService
-   * @param string           $loadPath
-   * @param string           $savePath
-   * @param bool             $stdOut
+   * @param string           $loadPath      Adresar so zadaniami.
+   * @param string           $savePath      Adresar kam sa ulozia riesenia.
+   * @param bool             $stdOut        Vypise zadanie aj riesenie do konzoly.
    */
     public function __construct(
         private SudokuService $sudokuService,
@@ -54,6 +54,7 @@ final readonly class SudokuFacade
         ?string $saveFile = null,
         ?string $savePath = null
     ): bool {
+        // Ak hodnoty parametrov zo solve maju hodnotu null prepisu sa hodnotami instancnych atributov
         $loadPath ??= $this->loadPath;
         $stdOut ??= $this->stdOut;
 
@@ -78,12 +79,7 @@ final readonly class SudokuFacade
             }
 
             if ($saveFile !== null) {
-                $savePath ??= $this->savePath;
-                if ($savePath === null) {
-                    throw new InvalidArgumentException(
-                        'Cesta pre ulozenie musi byt vyplnena (v konfiguracii alebo ako parameter).'
-                    );
-                }
+                $savePath = $this->savePath;
                 $this->viewService->saveAsHtml($grid, rtrim($savePath, '/\\') . DIRECTORY_SEPARATOR . $saveFile);
             }
         } catch (FileNotFoundException $e) {

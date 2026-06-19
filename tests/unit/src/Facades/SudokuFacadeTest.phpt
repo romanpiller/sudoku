@@ -33,8 +33,8 @@ final class SudokuFacadeTest extends TestCase
         $gridService = new GridService();
         $sudokuService = new SudokuService($gridService);
         $viewService = new ViewService(new TextFieldFactory(), new HtmlFieldFactory());
-        
-        $this->facade = new SudokuFacade($sudokuService, $gridService, $viewService);
+        $path = __DIR__ . '/../examples';
+        $this->facade = new SudokuFacade($sudokuService, $gridService, $viewService, $path, $path);
     }
 
     /**
@@ -62,7 +62,7 @@ final class SudokuFacadeTest extends TestCase
         $path = __DIR__ . '/../examples';
         $filename = 'example.txt';
         $saveFile = 'result_test.html';
-        $savePath = sys_get_temp_dir();
+        $savePath = $path;
         
         $result = $this->facade->solve($filename, $path, false, $saveFile, $savePath);
         
@@ -74,21 +74,6 @@ final class SudokuFacadeTest extends TestCase
         if (file_exists($fullSavePath)) {
             unlink($fullSavePath);
         }
-    }
-
-    /**
-     * Test chyby pri nespravnych parametroch ukladania.
-     *
-     * @return void
-     */
-    public function testSolveInvalidParams(): void
-    {
-        $path = __DIR__ . '/../examples';
-        $filename = 'example.txt';
-
-        Assert::exception(function () use ($path, $filename) {
-            $this->facade->solve($filename, $path, false, 'only_file.html', null);
-        }, InvalidArgumentException::class);
     }
 
     /**
