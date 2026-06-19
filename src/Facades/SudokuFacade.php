@@ -53,7 +53,7 @@ final readonly class SudokuFacade
             $numbers = $this->sudokuService->load($loadFile, $loadPath);
 
             // Vytvori grid
-            $grid = $this->gridService->create(10 /*$numbers*/);
+            $grid = $this->gridService->create($numbers);
 
             if ($stdOut) {
                 // Vypise zadanie.
