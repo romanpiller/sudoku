@@ -20,7 +20,7 @@
     }
   },
   "require": {
-    "php": "~8.3",
+    "php": "^8.2",
     "nette/di": "^3.2",
     "nette/schema": "^1.3"
   },
