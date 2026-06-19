@@ -34,7 +34,7 @@ final class Extension extends CompilerExtension
             $loader->load(__DIR__ . '/config.neon')['services']
         );
 
-        $facade = $this->getContainerBuilder()->getDefinition($this->prefix('SudokuFacade'));
+        $facade = $this->getContainerBuilder()->getDefinition($this->prefix('sudoku'));
         $facade->setArguments([
             'loadPath' => $this->config->loadPath,
             'savePath' => $this->config->savePath,
