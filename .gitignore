@@ -7,7 +7,6 @@ nbproject/
 
 vendor/
 
-/tests/cover.html
 /tests/*/output/
 /tests/*/*/output/
 /tests/*/*/*/output/

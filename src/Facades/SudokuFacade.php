@@ -49,8 +49,12 @@ final readonly class SudokuFacade
         ?string $savePath = null
     ): bool {
         try {
+            // Nacita zadanie
             $numbers = $this->sudokuService->load($loadFile, $loadPath);
+
+            // Vytvori grid
             $grid = $this->gridService->create($numbers);
+
             if ($stdOut) {
                 // Vypise zadanie.
                 echo $this->viewService->formatAsText($grid) . PHP_EOL;
