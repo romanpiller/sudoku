@@ -4,8 +4,10 @@ namespace Sudoku\Config;
 
 use Nette\DI\CompilerExtension;
 use Nette\DI\Config\Loader;
+use Nette\DI\Definitions\ServiceDefinition;
 use Nette\Schema\Expect;
 use Nette\Schema\Schema;
+use stdClass;
 
 /**
  * Rozsirenie.
@@ -29,16 +31,25 @@ final class Extension extends CompilerExtension
     public function loadConfiguration(): void
     {
         parent::loadConfiguration();
+        $builder = $this->getContainerBuilder();
         $loader = new Loader();
-        $this->loadDefinitionsFromConfig(
-            $loader->load(__DIR__ . '/config.neon')['services']
-        );
+        $neonConfig = $loader->load(__DIR__ . '/config.neon');
 
-        $facade = $this->getContainerBuilder()->getDefinition($this->prefix('sudoku'));
-        $facade->setArguments([
-            'loadPath' => $this->config->loadPath,
-            'savePath' => $this->config->savePath,
-            'stdOut' => $this->config->stdOut,
-        ]);
+        if (is_array($neonConfig) && isset($neonConfig['services']) && is_array($neonConfig['services'])) {
+            $this->loadDefinitionsFromConfig($neonConfig['services']);
+        }
+
+        $facade = $builder->getDefinition($this->prefix('sudoku'));
+
+        /** @var stdClass $extensionConfig */
+        $extensionConfig = $this->config;
+
+        if ($facade instanceof ServiceDefinition) {
+            $facade->setArguments([
+                'loadPath' => $extensionConfig->loadPath,
+                'savePath' => $extensionConfig->savePath,
+                'stdOut' => $extensionConfig->stdOut,
+            ]);
+        }
     }
 }
