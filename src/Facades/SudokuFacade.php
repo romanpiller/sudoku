@@ -22,11 +22,17 @@ final readonly class SudokuFacade
    * @param SudokuService    $sudokuService
    * @param GridService      $gridService
    * @param ViewService      $viewService
+   * @param string           $loadPath
+   * @param string           $savePath
+   * @param bool             $stdOut
    */
     public function __construct(
         private SudokuService $sudokuService,
         private GridService $gridService,
         private ViewService $viewService,
+        private string $loadPath,
+        private string $savePath,
+        private bool $stdOut = false,
     ) {
     }
 
@@ -34,8 +40,8 @@ final readonly class SudokuFacade
    * Vyriesi sudoku.
    *
    * @param string      $loadFile Nazov suboru so zadanim.
-   * @param string      $loadPath Cesta k suboru zo zadanim
-   * @param bool        $stdOut   Vypisovat zadanie a riesenie do konzoly.
+   * @param string|null $loadPath Cesta k suboru zo zadanim
+   * @param bool|null   $stdOut   Vypisovat zadanie a riesenie do konzoly.
    * @param string|null $saveFile Nazov suboru s riesenim.
    * @param string|null $savePath Cesta k suboru s ulozenym riesenim.
    * @return bool
@@ -43,11 +49,14 @@ final readonly class SudokuFacade
    */
     public function solve(
         string $loadFile,
-        string $loadPath,
-        bool $stdOut = false,
+        ?string $loadPath = null,
+        ?bool $stdOut = null,
         ?string $saveFile = null,
         ?string $savePath = null
     ): bool {
+        $loadPath ??= $this->loadPath;
+        $stdOut ??= $this->stdOut;
+
         try {
             // Nacita zadanie
             $numbers = $this->sudokuService->load($loadFile, $loadPath);
@@ -68,13 +77,13 @@ final readonly class SudokuFacade
                 echo $this->viewService->formatAsText($grid) . PHP_EOL;
             }
 
-            if (($saveFile === null) !== ($savePath === null)) {
-                throw new InvalidArgumentException(
-                    'Oba parametre (nazov suboru aj cesta) musia byt bud vyplnene alebo prazdne.'
-                );
-            }
-
-            if ($saveFile !== null && $savePath !== null) {
+            if ($saveFile !== null) {
+                $savePath ??= $this->savePath;
+                if ($savePath === null) {
+                    throw new InvalidArgumentException(
+                        'Cesta pre ulozenie musi byt vyplnena (v konfiguracii alebo ako parameter).'
+                    );
+                }
                 $this->viewService->saveAsHtml($grid, rtrim($savePath, '/\\') . DIRECTORY_SEPARATOR . $saveFile);
             }
         } catch (FileNotFoundException $e) {

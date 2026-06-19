@@ -1,7 +1,7 @@
 parameters:
 
 services:
-    - Sudoku\Facades\SudokuFacade
+    SudokuFacade: Sudoku\Facades\SudokuFacade
 
     - Sudoku\Data\Services\GridService
     - Sudoku\Services\SudokuService
