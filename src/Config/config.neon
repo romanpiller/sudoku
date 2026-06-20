@@ -1,11 +1,11 @@
 parameters:
 
 services:
-    sudoku: Sudoku\Facades\SudokuFacade
+  sudoku: Sudoku\Facades\SudokuFacade
 
-    - Sudoku\Data\Services\GridService
-    - Sudoku\Services\SudokuService
-    - Sudoku\View\ViewService
+  - Sudoku\Data\Services\GridService
+  - Sudoku\Services\SudokuService
+  - Sudoku\View\ViewService
 
-    - Sudoku\View\Text\TextFieldFactory
-    - Sudoku\View\Html\HtmlFieldFactory
+  - Sudoku\View\Text\TextFieldFactory
+  - Sudoku\View\Html\HtmlFieldFactory

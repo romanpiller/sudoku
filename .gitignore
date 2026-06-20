@@ -2,11 +2,7 @@ composer.lock
 
 .git/
 .idea/
-nbproject/
-/nbproject/private/
-
 vendor/
-
 /tests/*/output/
 /tests/*/*/output/
 /tests/*/*/*/output/

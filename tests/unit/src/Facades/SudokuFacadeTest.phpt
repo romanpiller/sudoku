@@ -2,15 +2,11 @@
 
 namespace Sudoku\Tests\Facades;
 
-require_once __DIR__ . '/../../bootstrap.php';
+$container = require __DIR__ . '/../../bootstrap.php';
 
-use Sudoku\Data\Services\GridService;
+use Nette\DI\Container;
 use Sudoku\Exceptions\InvalidArgumentException;
 use Sudoku\Facades\SudokuFacade;
-use Sudoku\Services\SudokuService;
-use Sudoku\View\Html\HtmlFieldFactory;
-use Sudoku\View\Text\TextFieldFactory;
-use Sudoku\View\ViewService;
 use Tester\Assert;
 use Tester\TestCase;
 
@@ -26,15 +22,20 @@ final class SudokuFacadeTest extends TestCase
     /** @var SudokuFacade Testovana fasada */
     private SudokuFacade $facade;
 
+    /**
+     * Konstruktor.
+     *
+     * @param Container $container
+     */
+    public function __construct(private readonly Container $container)
+    {
+    }
+
     /** @inheritDoc */
     protected function setUp(): void
     {
         parent::setUp();
-        $gridService = new GridService();
-        $sudokuService = new SudokuService($gridService);
-        $viewService = new ViewService(new TextFieldFactory(), new HtmlFieldFactory());
-        $path = __DIR__ . '/../examples';
-        $this->facade = new SudokuFacade($sudokuService, $gridService, $viewService, $path, $path);
+        $this->facade = $this->container->getByType(SudokuFacade::class);
     }
 
     /**
@@ -51,6 +52,7 @@ final class SudokuFacadeTest extends TestCase
         
         Assert::true($result, 'Fasada by mala uspesne vyriesit sudoku.');
     }
+
 
     /**
      * Test vyriesenia a ulozenia do HTML.
@@ -91,7 +93,23 @@ final class SudokuFacadeTest extends TestCase
         $output = (string) ob_get_clean();
 
         Assert::true($result);
+        Assert::contains('+-', $output); // Overime ze tam je aspon ramcek mriezky
         Assert::contains('1', $output); // Overime ze aspon nejake cislo tam je
+    }
+
+    /**
+     * Test vyriesenia tazkeho sudoku.
+     *
+     * @return void
+     */
+    public function testSolveHard(): void
+    {
+        $path = __DIR__ . '/../examples';
+        $filename = 'example-hard.txt';
+
+        $result = $this->facade->solve($filename, $path);
+
+        Assert::true($result, 'Fasada by mala uspesne vyriesit aj tazke sudoku.');
     }
 
     /**
@@ -134,6 +152,28 @@ final class SudokuFacadeTest extends TestCase
             $this->facade->solve('non_existent.txt', '/non/existent/path');
         }, InvalidArgumentException::class);
     }
+
+    /**
+     * Test nevalidnych parametrov pre ulozenie.
+     *
+     * @return void
+     */
+    public function testSolveInvalidSaveParameters(): void
+    {
+        $path = __DIR__ . '/../examples';
+        $filename = 'example.txt';
+
+        // Len subor bez cesty
+        $expectedMessage = 'Oba parametre (nazov suboru aj cesta) musia byt bud vyplnene alebo prazdne.';
+        Assert::exception(function () use ($filename, $path) {
+            $this->facade->solve($filename, $path, false, 'result.html', null);
+        }, InvalidArgumentException::class, $expectedMessage);
+
+        // Len cesta bez suboru
+        Assert::exception(function () use ($filename, $path) {
+            $this->facade->solve($filename, $path, false, null, $path);
+        }, InvalidArgumentException::class, $expectedMessage);
+    }
 }
 
-(new SudokuFacadeTest())->run();
+(new SudokuFacadeTest($container))->run();
