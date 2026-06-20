@@ -20,17 +20,17 @@
     }
   },
   "require": {
-    "php": "~8.3",
+    "php": "^8.2",
     "nette/di": "^3.2"
   },
   "require-dev": {
     "mockery/mockery": "^1.6",
     "nette/tester": "^2.4",
     "phpstan/phpstan": "^1.8",
-    "shipmonk/composer-dependency-analyser": "^1.8",
-    "squizlabs/php_codesniffer": "^3.7",
     "roave/security-advisories": "dev-latest",
-    "tracy/tracy": "^2.12"
+    "tracy/tracy": "^2.12",
+    "shipmonk/composer-dependency-analyser": "^1.8",
+    "squizlabs/php_codesniffer": "^3.7"
   },
   "scripts": {
     "check-dependency": "vendor/bin/composer-dependency-analyser --config tests/dependencies/composer-dependency-analyzer.php",
@@ -39,10 +39,10 @@
     "phpstan-baseline": "php -dxdebug.mode=off vendor/bin/phpstan analyse -c tests/phpstan/phpstan.neon --generate-baseline tests/phpstan-baseline.neon --allow-empty-baseline",
     "phpcodesniffer": "vendor/bin/phpcs -p -s --colors src/ tests/manual tests/unit --extensions=php,phpt --standard=PSR1,PSR2,PSR12 --exclude=PSR1.Files.SideEffects,PSR12.Files.OpenTag,PSR12.Files.FileHeader --ignore=tests/unit/src/examples/*,*/temp/* --parallel=10",
     "phpcodesniffer-new": "git diff devel --name-only --diff-filter=dr | xargs vendor/bin/phpcs -p -s --colors --extensions=php,phpt --standard=PSR1,PSR2,PSR12 --exclude=PSR1.Files.SideEffects,PSR12.Files.OpenTag,PSR12.Files.FileHeader --ignore=tests/unit/src/examples/* --parallel=10",
-    "man-test": "php tests/manual/Facades/SudokuFacade/AnalyseTest.phpt",
-    "unit-test": "vendor/bin/tester -o console -C -s tests/unit",
+    "manual": "php tests/manual/Facades/SudokuFacade/AnalyseTest.phpt",
+    "unit": "vendor/bin/tester -o console -C -s tests/unit",
     "cover": "vendor/bin/tester -C tests/unit --coverage-src src/ --coverage tests/cover.html",
     "check-new": ["@phpstan-new", "@phpcodesniffer-new"],
-    "check-all": ["@check-dependency", "@phpstan", "@phptest", "@phpcodesniffer"]
+    "check-all": ["@check-dependency", "@phpstan", "@phpcodesniffer", "@unit"]
   }
 }
