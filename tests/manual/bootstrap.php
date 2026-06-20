@@ -14,8 +14,8 @@ Helpers::purge(__DIR__ . '/temp');
 $containerLoader = new ContainerLoader(__DIR__ . '/temp', true);
 
 $container = $containerLoader->load(function ($compiler) {
-    $compiler->loadConfig(__DIR__ . '/../../src/config/config.neon');
-    $compiler->loadConfig(__DIR__ . '/config/config.local.neon');
+    $compiler->loadConfig(__DIR__ . '/../../src/Config/config.neon');
+    $compiler->loadConfig(__DIR__ . '/Config/config.local.neon');
 });
 
 return new $container();

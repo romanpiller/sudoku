@@ -12,7 +12,7 @@ composer require romanpiller/sudoku
 
 ## Poziadavky
 
-- PHP 8.5 alebo vyssie
+- PHP 8.2 alebo vyssie
 
 ## Pouzitie
 
@@ -26,13 +26,8 @@ use Sudoku\Facades\SudokuFacade;
 // Inicializacia fasady (idealne cez DI kontajner)
 // $facade = $container->getByType(SudokuFacade::class);
 
-$result = $facade->solve(
-    'zadanie.txt',    // Nazov suboru so zadanim
-    __DIR__ . '/data', // Cesta k adresaru so zadanim
-    true,              // Vypisat vysledok do konzoly (optional, default false)
-    'vysledok.html',   // Nazov suboru pre ulozenie riesenia (optional)
-    __DIR__ . '/temp'  // Cesta pre ulozenie riesenia (optional)
-);
+// Ak je fasada nakonfigurovana cez DI, staci zavolat solve len s nazvom suboru
+$result = $facade->solve('zadanie.txt');
 
 if ($result) {
     echo "Sudoku bolo uspesne vyriesene.";
@@ -60,26 +55,22 @@ Priklad `zadanie.txt`:
 
 ## Konfiguracia v Nette
 
-Ak pouzivate Nette Framework, mozete si sluzby zaregistrovat v `config.neon`:
+Najlepsi sposob ako zaregistrovat balik do Nette je pouzit DI extension:
 
 ```neon
-services:
-    - Sudoku\Facades\SudokuFacade
-    - Sudoku\Data\Services\GridService
-    - Sudoku\Services\SudokuService
-    - Sudoku\View\ViewService
-    - Sudoku\View\Text\TextFieldFactory
-    - Sudoku\View\Html\HtmlFieldFactory
+extensions:
+    sudoku: Sudoku\Config\Extension
+
+sudoku:
+    loadPath: %appDir%/data/sudoku/load
+    savePath: %appDir%/data/sudoku/save
+    stdOut: true
 ```
 
 ## Vyvoj a testovanie
 
 Projekt obsahuje sadu nastrojov pre udrzanie kvality kodu:
 
-### Unit testy (Nette Tester)
-```bash
-composer unit-test
-```
 
 ### Staticka analyza (PHPStan)
 ```bash
@@ -90,10 +81,18 @@ composer phpstan
 ```bash
 composer phpcodesniffer
 ```
+### Unit testy (Nette Tester)
+```bash
+composer unit
+```
 
 ### Pokrytie testov
 ```bash
 composer cover
+```
+### Manualne testy
+```bash
+composer manual
 ```
 
 ## Licencia

@@ -8,22 +8,12 @@ Tester\Environment::setup();
 Tester\Environment::bypassFinals();
 date_default_timezone_set('Europe/Bratislava');
 
+$containerLoader = new Nette\DI\ContainerLoader(__DIR__ . '/temp', true);
 
-/**
- * Vytvori kontajner pre test.
- *
- * @return Container
- */
-function create_container(): Container
-{
+/** @var Container $container */
+$container = $containerLoader->load(function ($compiler) {
+    $compiler->loadConfig(__DIR__ . '/../../src/Config/config.neon');
+    $compiler->loadConfig(__DIR__ . '/src/Config/config.local.neon');
+});
 
-    $containerLoader = new Nette\DI\ContainerLoader(__DIR__ . '/temp', true);
-
-    /** @var Container $container */
-    $container = $containerLoader->load(function ($compiler) {
-        $compiler->loadConfig(__DIR__ . '/../../src/config/config.neon');
-        $compiler->loadConfig(__DIR__ . '/src/config/config.local.neon');
-    });
-
-    return new $container();
-}
+return new $container();

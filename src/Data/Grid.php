@@ -11,10 +11,10 @@ namespace Sudoku\Data;
 final class Grid
 {
   /** @var int Pocet riadkov. */
-    public const int ROWS = 9;
+    public const ROWS = 9;
 
   /** @var int Pocet stlpcov. */
-    public const int COLUMNS = 9;
+    public const COLUMNS = 9;
 
   /** @var int[][] Mriezka. */
     private array $grid;

@@ -7,6 +7,8 @@ use Tester\Assert;
 /*
  * Manualny test celeho precesu riesenia sudoku.
  * Aj vypisom zadania a riesnia a aj ulozenim riesenia na disk.
+ *
+ * @commnad php tests/manual/Facades/SudokuFacade/AnalyseTest.phpt
  */
 
 /** @var Container $container */
