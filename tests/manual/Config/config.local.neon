@@ -1,1 +1,2 @@
-parameters:
+extensions:
+  sudoku: Sudoku\Config\Extension

@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 
 use Nette\DI\Container;
+use Nette\DI\Extensions\ExtensionsExtension;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
@@ -12,7 +13,7 @@ $containerLoader = new Nette\DI\ContainerLoader(__DIR__ . '/temp', true);
 
 /** @var Container $container */
 $container = $containerLoader->load(function ($compiler) {
-    $compiler->loadConfig(__DIR__ . '/../../src/Config/config.neon');
+    $compiler->addExtension('extensions', new ExtensionsExtension());
     $compiler->loadConfig(__DIR__ . '/src/Config/config.local.neon');
 });
 
