@@ -2,12 +2,9 @@ name: Release
 
 on:
   push:
-    branches:
-      - '**'
-      - '!main'
-      - '!devel'
+    branches: ["**", "!main"]
   pull_request:
-    branches: [ "main", "devel" ]
+    branches: [ "main" ]
 
 permissions:
   contents: read
